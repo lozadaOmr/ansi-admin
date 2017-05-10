@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'web.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get('DB_NAME', 'workplan_dev'),
+        'NAME': os.environ.get('DB_NAME', 'ansible_dev'),
         'USER': os.environ.get('DB_USER','admin'),
         'PASSWORD': os.environ.get('DB_PASSWORD','password'),
         'HOST': os.environ.get('DB_HOST'),
