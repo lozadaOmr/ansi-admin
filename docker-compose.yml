@@ -17,7 +17,7 @@ services:
       - "3306:3306"
     restart: always
   app:
-    build: .
+    image: lozadaomr/ansi-admin
     command: python manage.py runserver 0.0.0.0:8000
     depends_on:
       - mysql
