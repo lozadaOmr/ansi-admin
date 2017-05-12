@@ -7,7 +7,7 @@ services:
   mysql:
     image: mysql
     environment:
-      MYSQL_DATABASE: workplan_dev
+      MYSQL_DATABASE: ansible_dev
       MYSQL_USER: admin
       MYSQL_PASSWORD: password
       MYSQL_ROOT_PASSWORD: password
@@ -17,7 +17,7 @@ services:
       - "3306:3306"
     restart: always
   app:
-    build: .
+    image: lozadaomr/ansi-admin
     command: python manage.py runserver 0.0.0.0:8000
     depends_on:
       - mysql
@@ -27,7 +27,7 @@ services:
       DB_USER: admin
       PYTHONUNBUFFERED: 1
       DB_PASSWORD: password
-      DB_NAME: workplan_dev
+      DB_NAME: ansible_dev
       DB_HOST: mysql
     volumes:
       - "./src:/opt/app"
