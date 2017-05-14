@@ -126,3 +126,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# List of directories searched for fixture files,
+# in addition to the fixtures directory of each application, in search order.
+# https://docs.djangoproject.com/en/1.10/ref/settings/#std:setting-FIXTURE_DIRS
+
+FIXTURE_DIRS = ['fixtures']
