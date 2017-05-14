@@ -1,0 +1,1 @@
+[{"model": "ansible.project", "pk": 1, "fields": {"project_name": "Ansible Playbook", "playbook_path": "~/playbooks/", "ansible_config_path": "~/playbooks/ansible.cfg", "default_inventory": "hosts", "default_user": "ubuntu"}}]

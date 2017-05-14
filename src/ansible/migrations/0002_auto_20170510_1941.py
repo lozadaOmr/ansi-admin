@@ -8,7 +8,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('settings', '0001_initial'),
+        ('ansible', '0001_initial'),
     ]
 
     operations = [
