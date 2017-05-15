@@ -6,3 +6,15 @@ class Project(models.Model):
     ansible_config_path = models.CharField(max_length=200, default="~/")
     default_inventory = models.CharField(max_length=200, default="hosts")
     default_user = models.CharField(max_length=200, default="ubuntu")
+
+
+class Registry(models.Model):
+    project = models.OneToOneField(
+        Project,
+        on_delete=models.CASCADE,
+        primary_key=True,
+    )
+    name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return "project name: %s" % self.project.project_name
