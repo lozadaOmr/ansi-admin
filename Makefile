@@ -6,3 +6,8 @@ migrate:
 
 seed:
 	 docker exec -it ansiadmin_app_1 python manage.py loaddata users.json
+
+refresh:
+	- make migrate-reset
+	- make migrate
+	- make seed
