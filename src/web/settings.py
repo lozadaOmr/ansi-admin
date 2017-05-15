@@ -133,3 +133,7 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/1.10/ref/settings/#std:setting-FIXTURE_DIRS
 
 FIXTURE_DIRS = ['fixtures']
+
+
+# PLAYBOOK mounted directory
+PLAYBOOK_DIR = os.path.join(BASE_DIR, 'playbooks/')
