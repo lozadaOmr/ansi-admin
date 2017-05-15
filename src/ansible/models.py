@@ -1,15 +1,16 @@
 from django.db import models
+from django.conf import settings
 
 class Playbook(models.Model):
 
-    class Meta:
-        verbose_name_plural = "playbooks"
+    default_path = settings.PLAYBOOK_DIR
 
     name = models.CharField(max_length=200)
-    path = models.CharField(max_length=200, default="~/")
-    ansible_config = models.CharField(max_length=200, default="~/")
     inventory = models.CharField(max_length=200, default="hosts")
     user = models.CharField(max_length=200, default="ubuntu")
 
     def __str__(self):
         return "%s" % self.name
+
+    class Meta:
+        verbose_name_plural = "playbooks"
