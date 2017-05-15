@@ -9,6 +9,10 @@ class Project(models.Model):
 
 
 class Registry(models.Model):
+    class Meta:
+        verbose_name_plural = "registries"
+
+
     project = models.OneToOneField(
         Project,
         on_delete=models.CASCADE,
