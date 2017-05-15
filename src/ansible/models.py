@@ -12,4 +12,4 @@ class Playbook(models.Model):
     user = models.CharField(max_length=200, default="ubuntu")
 
     def __str__(self):
-        return "Playbook name: %s" % self.playbook.name
+        return "%s" % self.name
