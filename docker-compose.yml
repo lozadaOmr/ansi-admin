@@ -31,7 +31,7 @@ services:
       DB_HOST: mysql
     volumes:
       - "./src:/opt/app"
-      - "./playbooks:/opt/playbooks"
+      - "./playbooks:/opt/app/playbooks"
     ports:
       - "8000:8000"
     restart: always
