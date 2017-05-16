@@ -24,7 +24,7 @@ class Playbook(models.Model):
 
 
 class Registry(models.Model):
-    playbook = models.ForeignKey(Playbook, on_delete=models.CASCADE)
+    playbook = models.ForeignKey("Playbook", default=1, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     item = models.FilePathField(path=settings.PLAYBOOK_DIR, recursive=True)
 
