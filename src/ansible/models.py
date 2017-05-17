@@ -26,10 +26,17 @@ class Playbook(models.Model):
 class Registry(models.Model):
     playbook = models.ForeignKey("Playbook", default=1, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
-    item = models.FilePathField(path=settings.PLAYBOOK_DIR, recursive=True)
+    file_path = models.FilePathField(path=settings.PLAYBOOK_DIR, recursive=True)
 
     def __str__(self):
         return "%s" % self.name
+
+    def modify_item_file_path(self):
+        return self.item
+
+    def save(self, *args, **kwargs):
+        self.item = self.modify_item_file_path()
+        super(Registry, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name_plural = "registries"
