@@ -4,4 +4,4 @@ from django.http import HttpResponseRedirect, HttpResponse
 from .models import Playbook
 
 def index(request):
-    return "200"
+    return HttpResponse("200")
