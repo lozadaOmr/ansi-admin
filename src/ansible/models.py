@@ -8,7 +8,7 @@ class Playbook(models.Model):
     directory = models.CharField(max_length=200, editable=False, default="dir")
 
     def __str__(self):
-        return "%s" % self.name
+        return self.name
 
     def format_directory(self):
         directory = self.name.lower()
@@ -29,7 +29,7 @@ class Registry(models.Model):
     file_path = models.FilePathField(path=settings.PLAYBOOK_DIR, recursive=True)
 
     def __str__(self):
-        return "%s" % self.name
+        return self.name
 
     def modify_item_file_path(self):
         return self.item
