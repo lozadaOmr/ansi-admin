@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'ansible.apps.SettingsConfig',
+    'ansible.apps.AnsibleConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -55,7 +55,7 @@ ROOT_URLCONF = 'web.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -133,3 +133,7 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/1.10/ref/settings/#std:setting-FIXTURE_DIRS
 
 FIXTURE_DIRS = ['fixtures']
+
+
+# PLAYBOOK mounted directory
+PLAYBOOK_DIR = os.path.join(BASE_DIR, 'playbooks/')
