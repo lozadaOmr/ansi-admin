@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 import git, os
 
 class Github (models.Model):
@@ -9,10 +10,10 @@ class Github (models.Model):
         return self.repository
 
     def clone_repository(self):
-        DIR_NAME = self.repository
+        DIR_NAME = os.path.join(settings.PLAYBOOK_DIR, self.repository)
         REMOTE_URL = "https://github.com/{0}/{1}.git".format(self.username, self.repository)
 
-        os.mkdir(DIR_NAME)
+        os.mkdir(os.path.join(DIR_NAME))
 
         repo = git.Repo.init(DIR_NAME)
         origin = repo.create_remote('origin', REMOTE_URL)
