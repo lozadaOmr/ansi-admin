@@ -25,4 +25,5 @@ class Github (models.Model):
         super(Github, self).save(*args, **kwargs)
 
     class Meta:
+        verbose_name = "project"
         verbose_name_plural = "projects"
