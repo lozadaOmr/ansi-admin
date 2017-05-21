@@ -6,6 +6,7 @@ RUN apt-get install python-mysqldb
 RUN apt-get -y autoremove
 
 RUN mkdir /opt/app
+RUN mkdir /opt/app/playbooks
 VOLUME /opt/app
 WORKDIR /opt/app
 ADD ./src/requirements.txt .
