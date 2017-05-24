@@ -2,18 +2,17 @@ from django.db import models
 from django.conf import settings
 import git, os, shutil
 
-class GithubQuerySet(models.QuerySet):
+class QuerySet(models.QuerySet):
 
     def delete(self, *args, **kwargs):
         for obj in self:
             obj.delete()
-        super(GithubQuerySet, self).delete(*args, **kwargs)
+        super(QuerySet, self).delete(*args, **kwargs)
 
-class Github (models.Model):
-    username = models.CharField(max_length=39)
+class Repository(models.Model):
     repository = models.CharField(max_length=100)
 
-    objects = GithubQuerySet.as_manager()
+    objects = QuerySet.as_manager()
 
     def __str__(self):
         return self.repository
