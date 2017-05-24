@@ -22,7 +22,7 @@ class Repository(models.Model):
 
     def clone_repository(self):
         DIR_NAME = self.get_dir_name()
-        REMOTE_URL = "https://github.com/{0}/{1}.git".format(self.username, self.repository)
+        REMOTE_URL = self.get_remote_url()
 
         os.mkdir(os.path.join(DIR_NAME))
 
