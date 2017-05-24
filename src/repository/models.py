@@ -37,12 +37,23 @@ class Repository(models.Model):
 
     def save(self, *args, **kwargs):
         self.clone_repository()
-        super(Github, self).save(*args, **kwargs)
+        super(Repository, self).save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
         self.rm_repository()
-        super(Github, self).delete(*args, **kwargs)
+        super(Repository, self).delete(*args, **kwargs)
 
     class Meta:
+        abstract = True
         verbose_name = "project"
         verbose_name_plural = "projects"
+
+class Github(Repository):
+    username = models.CharField(max_length=39)
+
+    def get_remote_url(self):
+        return "https://github.com/{0}/{1}.git".format(self.username, self.repository)
+
+    class Meta:
+        verbose_name = "github project"
+        verbose_name_plural = "github projects"
