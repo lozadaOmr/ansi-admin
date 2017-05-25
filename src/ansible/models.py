@@ -41,14 +41,3 @@ class Registry(models.Model):
     class Meta:
         verbose_name_plural = "registries"
 
-
-class Repository(models.Model):
-    # Handle public Github Repo for now
-    name = models.CharField(max_length=200)
-    url = models.URLField(max_length=200)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name_plural = "repositories"
