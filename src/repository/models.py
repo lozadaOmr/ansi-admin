@@ -21,6 +21,7 @@ class Repository(models.Model):
         return os.path.join(settings.PLAYBOOK_DIR, self.repository)
 
     def clone_repository(self):
+
         DIR_NAME = self.get_dir_name()
         REMOTE_URL = self.get_remote_url()
 
@@ -57,3 +58,15 @@ class Github(Repository):
     class Meta:
         verbose_name = "github project"
         verbose_name_plural = "github projects"
+
+class Gitlab(Repository):
+    username = models.CharField(max_length=255)
+    repository_owner = models.CharField(max_length=255)
+
+    def get_remote_url(self):
+        return "https://{0}@gitlab.com/{1}/{2}.git".format(
+                self.username, self.repository_owner, self.repository)
+
+    class Meta:
+        verbose_name = "gitlab project"
+        verbose_name_plural = "gitlab projects"
