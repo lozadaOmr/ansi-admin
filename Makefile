@@ -11,6 +11,9 @@ migrations:
 	docker exec -it ansiadmin_app_1 python manage.py makemigrations
 	- make migrate
 
+collectstatic:
+	docker exec -it ansiadmin_app_1 python manage.py collectstatic
+
 refresh:
 	- make migrate-reset
 	- make migrate
