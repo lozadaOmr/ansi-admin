@@ -1,6 +1,7 @@
 data/
 src/*/*.pyc
 src/playbooks/*
+src/assets/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
