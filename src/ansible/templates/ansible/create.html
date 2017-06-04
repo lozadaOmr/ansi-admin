@@ -1,10 +1,10 @@
 {% extends  "base.html" %}
 
-{% block head %}
-<title>Add Playbook Repository</title>
-{% endblock head %}
+{% block title %}
+  <title>Add Playbook Repository</title>
+{% endblock title %}
 
-{% block body %}
-{% csrf_token %}
-{{ form }}
-{% endblock body %}
+{% block content %}
+  {% csrf_token %}
+  {{ form }}
+{% endblock content %}
