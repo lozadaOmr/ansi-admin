@@ -1,9 +1,6 @@
 from django import forms
 
 
-class ProjectForm(forms.ModelForm):
-    class Meta:
-        model = Project 
-        widgets = {
-        'password': forms.PasswordInput(),
-    }
+class RepositoryForm(forms.Form):
+    repository = forms.CharField(label='Repository', max_length=100)
+    username = forms.CharField(label='Username', max_length=39)

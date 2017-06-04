@@ -1,0 +1,10 @@
+{% extends  "base.html" %}
+
+{% block head %}
+<title>Add Playbook Repository</title>
+{% endblock head %}
+
+{% block body %}
+{% csrf_token %}
+{{ form }}
+{% endblock body %}
