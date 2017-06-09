@@ -6,20 +6,23 @@ from ansible.models import Github
 def index(request):
     return HttpResponse("200")
 
-def create(request):
-    if request.method == 'POST':
-        form = RepositoryForm(request.POST)
-        if form.is_valid():
-            project = Github()
-            project.repository = form.cleaned_data['repository']
-            project.username = form.cleaned_data['username']
-            project.save()
-            # Redirect here for now
-            return HttpResponseRedirect('create')
-    else:
-        form = RepositoryForm()
-    return render(request, 'ansible/create.html', {'form': form})
-
 class PlaybookWizard(SessionWizardView):
+    instance = None
+
+    def get_form_instance(self, step):
+        if self.instance is None:
+            self.instance = Github()
+        return self.instance
+
+    def get_form_initial(self, step):
+        initial = {}
+
+        if step == '1':
+            prev_data = self.storage.get_step_data('0')
+            initial['name'] = prev_data['0-repository']
+            return self.initial_dict.get(step, initial)
+        return self.initial_dict.get(step, {})
+
+
     def done(self, form_list, **kwargs):
-        return HttpResponseRedirect('create')
+        return HttpResponseRedirect('ansible/create')
