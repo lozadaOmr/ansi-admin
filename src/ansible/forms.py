@@ -1,12 +1,15 @@
 from django import forms
+from django.forms import ModelForm
+from ansible.models import Github, Playbook
 
 
-class AnsibleForm1(forms.Form):
-    repository = forms.CharField(label='Repository', max_length=100)
-    username = forms.CharField(label='Username', max_length=39)
+class AnsibleForm1(ModelForm):
+    class Meta:
+        model = Github
+        fields = ['repository', 'username']
 
-class AnsibleForm2(forms.Form):
-    name = forms.CharField(label='Name', max_length=200)
-    inventory = forms.CharField(label='Inventory', max_length=200)
-    user = forms.CharField(label='Remote User', max_length=200)
+class AnsibleForm2(ModelForm):
+    class Meta:
+        model = Playbook
+        fields = ['name', 'inventory', 'user']
 
