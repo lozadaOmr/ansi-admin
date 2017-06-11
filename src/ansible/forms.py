@@ -1,7 +1,5 @@
-from django import forms
 from django.forms import ModelForm
 from ansible.models import Github, Playbook
-
 
 class AnsibleForm1(ModelForm):
     class Meta:
