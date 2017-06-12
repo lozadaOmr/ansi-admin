@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.core.validators import ValidationError
 import git, os, shutil
 
 class QuerySet(models.QuerySet):
@@ -64,9 +65,12 @@ class Playbook(models.Model):
     def check_inventory_exists(self):
         inventory = self.inventory
         repo_name = self.format_directory()
+
         os.chdir(settings.PLAYBOOK_DIR + repo_name)
         current_dir = os.getcwd()
-        return  os.path.exists(os.path.join(current_dir, inventory))
+
+        if not os.path.exists(os.path.join(current_dir, inventory)):
+            raise ValidationError('Inventory file does not exist')
 
     def format_directory(self):
         directory = self.name.lower()
