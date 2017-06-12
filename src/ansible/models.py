@@ -61,13 +61,25 @@ class Playbook(models.Model):
     def __str__(self):
         return self.name
 
+    def check_inventory_exists(self):
+        inventory = self.inventory
+        repo_name = self.format_directory()
+        os.chdir(settings.PLAYBOOK_DIR + repo_name)
+        current_dir = os.getcwd()
+        return  os.path.exists(os.path.join(current_dir, inventory))
+
     def format_directory(self):
         directory = self.name.lower()
         directory = directory.replace(" ","-")
         return directory
 
+    def clean(self, *args, **kwargs):
+        self.check_inventory_exists()
+        super(Playbook, self).clean(*args, **kwargs)
+
     def save(self, *args, **kwargs):
         self.directory = self.format_directory()
+        self.full_clean()
         super(Playbook, self).save(*args, **kwargs)
 
     class Meta:
