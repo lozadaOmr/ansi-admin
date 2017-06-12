@@ -33,8 +33,11 @@ class Repository(models.Model):
         origin.pull(origin.refs[0].remote_head)
 
     def rm_repository(self):
-        DIR_NAME = self.get_dir_name()
-        shutil.rmtree(DIR_NAME)
+        try:
+            DIR_NAME = self.get_dir_name()
+            shutil.rmtree(DIR_NAME)
+        except OSError:
+            pass
 
     def save(self, *args, **kwargs):
         self.clone_repository()
