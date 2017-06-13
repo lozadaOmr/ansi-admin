@@ -22,16 +22,15 @@ class Repository(models.Model):
         return os.path.join(settings.PLAYBOOK_DIR, self.repository)
 
     def clone_repository(self):
+        if not self.check_repository_exists():
+            DIR_NAME = self.get_dir_name()
+            REMOTE_URL = self.get_remote_url()
 
-        DIR_NAME = self.get_dir_name()
-        REMOTE_URL = self.get_remote_url()
-
-        os.mkdir(os.path.join(DIR_NAME))
-
-        repo = git.Repo.init(DIR_NAME)
-        origin = repo.create_remote('origin', REMOTE_URL)
-        origin.fetch()
-        origin.pull(origin.refs[0].remote_head)
+            os.mkdir(os.path.join(DIR_NAME))
+            repo = git.Repo.init(DIR_NAME)
+            origin = repo.create_remote('origin', REMOTE_URL)
+            origin.fetch()
+            origin.pull(origin.refs[0].remote_head)
 
     def rm_repository(self):
         try:
@@ -39,6 +38,12 @@ class Repository(models.Model):
             shutil.rmtree(DIR_NAME)
         except OSError:
             pass
+
+    def check_repository_exists(self):
+        if os.path.exists(os.path.join(self.get_dir_name())):
+            raise ValidationError('Repository directory already exists')
+        else:
+            return False
 
     def save(self, *args, **kwargs):
         self.clone_repository()
@@ -69,6 +74,7 @@ class Playbook(models.Model):
         os.chdir(settings.PLAYBOOK_DIR + repo_name)
         current_dir = os.getcwd()
 
+        # display ValidationError on page
         if not os.path.exists(os.path.join(current_dir, inventory)):
             raise ValidationError('Inventory file does not exist')
 
