@@ -42,11 +42,13 @@ class Repository(models.Model):
     def check_repository_exists(self):
         if os.path.exists(os.path.join(self.get_dir_name())):
             raise ValidationError('Repository directory already exists')
-        else:
-            return False
+
+    def clean(self, *args, **kwargs):
+        self.clone_repository()
+        super(Repository, self).clean(*args, **kwargs)
 
     def save(self, *args, **kwargs):
-        self.clone_repository()
+        self.full_clean()
         super(Repository, self).save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
