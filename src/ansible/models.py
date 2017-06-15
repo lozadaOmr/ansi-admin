@@ -22,15 +22,14 @@ class Repository(models.Model):
         return os.path.join(settings.PLAYBOOK_DIR, self.repository)
 
     def clone_repository(self):
-        if not self.check_repository_exists():
-            DIR_NAME = self.get_dir_name()
-            REMOTE_URL = self.get_remote_url()
+        DIR_NAME = self.get_dir_name()
+        REMOTE_URL = self.get_remote_url()
 
-            os.mkdir(os.path.join(DIR_NAME))
-            repo = git.Repo.init(DIR_NAME)
-            origin = repo.create_remote('origin', REMOTE_URL)
-            origin.fetch()
-            origin.pull(origin.refs[0].remote_head)
+        os.mkdir(os.path.join(DIR_NAME))
+        repo = git.Repo.init(DIR_NAME)
+        origin = repo.create_remote('origin', REMOTE_URL)
+        origin.fetch()
+        origin.pull(origin.refs[0].remote_head)
 
     def rm_repository(self):
         try:
@@ -41,14 +40,11 @@ class Repository(models.Model):
 
     def check_repository_exists(self):
         if os.path.exists(os.path.join(self.get_dir_name())):
-            raise ValidationError('Repository directory already exists')
-
-    def clean(self, *args, **kwargs):
-        self.clone_repository()
-        super(Repository, self).clean(*args, **kwargs)
+            return False 
+        return True 
 
     def save(self, *args, **kwargs):
-        self.full_clean()
+        self.clone_repository()
         super(Repository, self).save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
