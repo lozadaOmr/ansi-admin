@@ -39,9 +39,7 @@ class Repository(models.Model):
             pass
 
     def check_repository_exists(self):
-        if os.path.exists(os.path.join(self.get_dir_name())):
-            return False 
-        return True 
+        return os.path.exists(self.get_dir_name())
 
     def save(self, *args, **kwargs):
         self.clone_repository()
