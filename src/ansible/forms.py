@@ -1,12 +1,12 @@
 from django.conf import settings
 from django.core.validators import ValidationError
 from django.forms import ModelForm
-from ansible.models import Github, Playbook
+from ansible.models import Playbook
 import os
 
 class AnsibleForm1(ModelForm):
     class Meta:
-        model = Github
+        model = Playbook
         fields = ['repository', 'username']
 
     def clean_repository(self):
@@ -20,5 +20,5 @@ class AnsibleForm1(ModelForm):
 class AnsibleForm2(ModelForm):
     class Meta:
         model = Playbook
-        fields = ['name', 'inventory', 'user']
+        fields = ['inventory', 'user']
 
