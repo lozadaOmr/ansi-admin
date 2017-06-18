@@ -70,7 +70,6 @@ class Playbook(models.Model):
         os.chdir(settings.PLAYBOOK_DIR + repo_name)
         current_dir = os.getcwd()
 
-        # display ValidationError on page
         if not os.path.exists(os.path.join(current_dir, inventory)):
             raise ValidationError('Inventory file does not exist')
 
