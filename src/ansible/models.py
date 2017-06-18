@@ -10,13 +10,22 @@ class QuerySet(models.QuerySet):
             obj.delete()
         super(QuerySet, self).delete(*args, **kwargs)
 
-class Repository(models.Model):
-    repository = models.CharField(max_length=100)
+class Playbook(models.Model):
+    username = models.CharField(max_length=39, default="")
+    repository = models.CharField(max_length=100, default="")
+    inventory = models.CharField(max_length=200, default="hosts")
+    user = models.CharField(max_length=200, default="ubuntu")
+    directory = models.CharField(max_length=200, editable=False, default="dir")
 
-    objects = QuerySet.as_manager()
+    query_set = QuerySet.as_manager()
 
     def __str__(self):
         return self.repository
+
+    def get_remote_url(self):
+        return "https://github.com/{0}/{1}.git".format(
+                self.username, self.repository
+        )
 
     def get_dir_name(self):
         return os.path.join(settings.PLAYBOOK_DIR, self.repository)
@@ -31,37 +40,8 @@ class Repository(models.Model):
         origin.fetch()
         origin.pull(origin.refs[0].remote_head)
 
-    def rm_repository(self):
-        try:
-            DIR_NAME = self.get_dir_name()
-            shutil.rmtree(DIR_NAME)
-        except OSError:
-            pass
-
     def check_repository_exists(self):
         return os.path.exists(self.get_dir_name())
-
-    def save(self, *args, **kwargs):
-        self.clone_repository()
-        super(Repository, self).save(*args, **kwargs)
-
-    def delete(self, *args, **kwargs):
-        self.rm_repository()
-        super(Repository, self).delete(*args, **kwargs)
-
-    class Meta:
-        abstract = True
-        verbose_name = "project"
-        verbose_name_plural = "projects"
-
-class Playbook(models.Model):
-    name = models.CharField(max_length=200)
-    inventory = models.CharField(max_length=200, default="hosts")
-    user = models.CharField(max_length=200, default="ubuntu")
-    directory = models.CharField(max_length=200, editable=False, default="dir")
-
-    def __str__(self):
-        return self.name
 
     def check_inventory_exists(self):
         inventory = self.inventory
@@ -74,59 +54,31 @@ class Playbook(models.Model):
             raise ValidationError('Inventory file does not exist')
 
     def format_directory(self):
-        directory = self.name.lower()
+        directory = self.repository.lower()
         directory = directory.replace(" ","-")
         return directory
 
+    def rm_repository(self):
+        try:
+            DIR_NAME = self.get_dir_name()
+            shutil.rmtree(DIR_NAME)
+        except OSError:
+            pass
+
     def clean(self, *args, **kwargs):
-        self.check_inventory_exists()
         super(Playbook, self).clean(*args, **kwargs)
 
     def save(self, *args, **kwargs):
         self.directory = self.format_directory()
-        self.full_clean()
+        self.clone_repository()
+        self.check_inventory_exists()
         super(Playbook, self).save(*args, **kwargs)
 
+    def delete(self, *args, **kwargs):
+        self.rm_repository()
+        super(Playbook, self).delete(*args, **kwargs)
+
     class Meta:
+        verbose_name = "playbook"
         verbose_name_plural = "playbooks"
 
-
-class Registry(models.Model):
-    playbook = models.ForeignKey("Playbook", default=1, on_delete=models.CASCADE)
-    name = models.CharField(max_length=200)
-    file_path = models.FilePathField(path=settings.PLAYBOOK_DIR, recursive=True)
-
-    def __str__(self):
-        return self.name
-
-    def modify_item_file_path(self):
-        return self.item
-
-    def save(self, *args, **kwargs):
-        self.item = self.modify_item_file_path()
-        super(Registry, self).save(*args, **kwargs)
-
-    class Meta:
-        verbose_name_plural = "registries"
-
-class Github(Repository):
-    username = models.CharField(max_length=39)
-
-    def get_remote_url(self):
-        return "https://github.com/{0}/{1}.git".format(self.username, self.repository)
-
-    class Meta:
-        verbose_name = "github project"
-        verbose_name_plural = "github projects"
-
-class Gitlab(Repository):
-    username = models.CharField(max_length=255)
-    repository_owner = models.CharField(max_length=255)
-
-    def get_remote_url(self):
-        return "https://{0}@gitlab.com/{1}/{2}.git".format(
-                self.username, self.repository_owner, self.repository)
-
-    class Meta:
-        verbose_name = "gitlab project"
-        verbose_name_plural = "gitlab projects"
