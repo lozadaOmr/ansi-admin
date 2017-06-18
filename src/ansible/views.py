@@ -15,5 +15,5 @@ class PlaybookWizard(NamedUrlSessionWizardView):
         return self.initial_dict.get(step, {})
 
     def done(self, form_list, **kwargs):
-        return HttpResponseRedirect('/ansible')
+        return HttpResponseRedirect('/playbooks')
 
