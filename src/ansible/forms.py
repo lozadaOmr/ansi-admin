@@ -22,3 +22,11 @@ class AnsibleForm2(ModelForm):
         model = Playbook
         fields = ['inventory', 'user']
 
+    def clean_inventory(self):
+        if not self.check_inventory_exists(self.cleaned_data['inventory']):
+            raise ValidationError("Inventory not found")
+        return self.cleaned_data['inventory']
+
+    def check_inventory_exists(self, inventory):
+        return os.path.exists(os.path.join(settings.PLAYBOOK_DIR, inventory))
+
