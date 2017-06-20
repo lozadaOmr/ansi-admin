@@ -4,6 +4,13 @@ from django.forms import ModelForm
 from ansible.models import Playbook
 import os
 
+
+def check_path_exists(path, inventory):
+    os.chdir(settings.PLAYBOOK_DIR + path)
+    current_dir = os.getcwd()
+    return os.path.exists(os.path.join(current_dir, inventory))
+
+
 class AnsibleForm1(ModelForm):
     class Meta:
         model = Playbook
@@ -17,16 +24,16 @@ class AnsibleForm1(ModelForm):
     def check_repository_exists(self, repository):
         return os.path.exists(os.path.join(settings.PLAYBOOK_DIR, repository))
 
+
 class AnsibleForm2(ModelForm):
     class Meta:
         model = Playbook
         fields = ['inventory', 'user']
 
     def clean_inventory(self):
-        if not self.check_inventory_exists(self.cleaned_data['inventory']):
+        inventory = self.cleaned_data['inventory']
+        path = self.initial['prev_data']['repository']
+        if check_path_exists(path, inventory):
             raise ValidationError("Inventory not found")
         return self.cleaned_data['inventory']
-
-    def check_inventory_exists(self, inventory):
-        return os.path.exists(os.path.join(settings.PLAYBOOK_DIR, inventory))
 
