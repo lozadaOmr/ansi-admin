@@ -11,7 +11,15 @@ def index(request):
 class PlaybookWizard(SessionWizardView):
     def get_form_initial(self, step):
         initial = {}
+
+        if step == '1':
+            prev_data = self.get_cleaned_data_for_step('0')
+            result = super(PlaybookWizard, self).get_form_initial(step)
+            result['prev_data'] = {}
+            result['prev_data']['repository'] = prev_data['repository']
+            return result
         return self.initial_dict.get(step, {})
+
 
     def done(self, form_list, form_dict,**kwargs):
         for form in form_list:
