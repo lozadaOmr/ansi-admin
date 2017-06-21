@@ -5,10 +5,12 @@ from ansible.models import Playbook
 import os
 
 
-def check_path_exists(path, inventory):
-    os.chdir(settings.PLAYBOOK_DIR + path)
-    current_dir = os.getcwd()
-    return os.path.exists(os.path.join(current_dir, inventory))
+def check_path_exists(path, file=None):
+    if file:
+        os.chdir(settings.PLAYBOOK_DIR + path)
+        current_dir = os.getcwd()
+        return os.path.exists(os.path.join(current_dir, file))
+    return os.path.exists(os.path.join(settings.PLAYBOOK_DIR, path))
 
 
 class AnsibleForm1(ModelForm):
@@ -17,12 +19,9 @@ class AnsibleForm1(ModelForm):
         fields = ['repository', 'username']
 
     def clean_repository(self):
-        if self.check_repository_exists(self.cleaned_data['repository']):
+        if check_path_exists(self.cleaned_data['repository']):
             raise ValidationError("Repository Exists")
         return self.cleaned_data['repository']
-
-    def check_repository_exists(self, repository):
-        return os.path.exists(os.path.join(settings.PLAYBOOK_DIR, repository))
 
 
 class AnsibleForm2(ModelForm):
