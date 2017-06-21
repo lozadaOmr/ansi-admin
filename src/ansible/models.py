@@ -1,14 +1,17 @@
 from django.db import models
 from django.conf import settings
 from django.core.validators import ValidationError
-import git, os, shutil
+import git
+import os
+import shutil
+
 
 class QuerySet(models.QuerySet):
-
     def delete(self, *args, **kwargs):
         for obj in self:
             obj.delete()
         super(QuerySet, self).delete(*args, **kwargs)
+
 
 class Playbook(models.Model):
     username = models.CharField(max_length=39, default="")
@@ -55,7 +58,7 @@ class Playbook(models.Model):
 
     def format_directory(self):
         directory = self.repository.lower()
-        directory = directory.replace(" ","-")
+        directory = directory.replace(" ", "-")
         return directory
 
     def rm_repository(self):
@@ -71,7 +74,6 @@ class Playbook(models.Model):
     def save(self, *args, **kwargs):
         self.directory = self.format_directory()
         self.clone_repository()
-        self.check_inventory_exists()
         super(Playbook, self).save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
@@ -81,4 +83,3 @@ class Playbook(models.Model):
     class Meta:
         verbose_name = "playbook"
         verbose_name_plural = "playbooks"
-

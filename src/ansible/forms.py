@@ -2,18 +2,26 @@ from django.conf import settings
 from django.core.validators import ValidationError
 from django.forms import ModelForm
 from ansible.models import Playbook
+import git
 import os
 
 
-def check_path_exists(path, host_inventory=None):
+def check_path_exists(repository, host_inventory=None):
     if host_inventory:
-        print '*'
-        print host_inventory
-        print '*'
-        os.chdir(settings.PLAYBOOK_DIR + path)
+        os.chdir(settings.PLAYBOOK_DIR + repository)
         current_dir = os.getcwd()
         return os.path.exists(os.path.join(current_dir, host_inventory))
-    return os.path.exists(os.path.join(settings.PLAYBOOK_DIR, path))
+    return os.path.exists(os.path.join(settings.PLAYBOOK_DIR, repository))
+
+
+def get_dir_name(repository):
+    return os.path.join(settings.PLAYBOOK_DIR, repository)
+
+
+def get_remote_repo_url(username, repository):
+    return "https://github.com/{0}/{1}.git".format(
+            username, repository
+    )
 
 
 class AnsibleForm1(ModelForm):
@@ -25,6 +33,19 @@ class AnsibleForm1(ModelForm):
         if check_path_exists(self.cleaned_data['repository']):
             raise ValidationError("Repository already exists")
         return self.cleaned_data['repository']
+
+    def clone_repository(self):
+        repository = self.cleaned_data['repository']
+        username = self.cleaned_data['username']
+
+        dir_name = get_dir_name(repository)
+        remote_url = get_remote_repo_url(username, repository)
+
+        os.mkdir(os.path.join(dir_name))
+        repo = git.Repo.init(dir_name)
+        origin = repo.create_remote('origin', remote_url)
+        origin.fetch()
+        origin.pull(origin.refs[0].remote_head)
 
 
 class AnsibleForm2(ModelForm):
