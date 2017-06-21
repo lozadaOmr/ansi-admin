@@ -73,7 +73,6 @@ class Playbook(models.Model):
 
     def save(self, *args, **kwargs):
         self.directory = self.format_directory()
-        self.clone_repository()
         super(Playbook, self).save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
