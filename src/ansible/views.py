@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.core.urlresolvers import reverse
+from django.core.validators import ValidationError
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
 from formtools.wizard.views import SessionWizardView
@@ -9,6 +10,14 @@ import os
 
 def index(request):
     return HttpResponse("200")
+
+
+def check_path_exists(repository, host_inventory=None):
+    if host_inventory:
+        os.chdir(settings.PLAYBOOK_DIR + repository)
+        current_dir = os.getcwd()
+        return os.path.exists(os.path.join(current_dir, host_inventory))
+    return os.path.exists(os.path.join(settings.PLAYBOOK_DIR, repository))
 
 
 def clone_repository(username, repository):
@@ -32,6 +41,16 @@ def get_remote_repo_url(username, repository):
     )
 
 
+def validate_repository(repository):
+    if check_path_exists(repository):
+        raise ValidationError("Repository already exists")
+
+
+def validate_inventory(repository, inventory):
+    if not check_path_exists(repository, inventory):
+        raise ValidationError("Inventory not found")
+
+
 class PlaybookWizard(SessionWizardView):
     prev_form_data = {}
 
@@ -52,17 +71,21 @@ class PlaybookWizard(SessionWizardView):
             self.prev_form_data['username'] = form.data.dict()['0-username']
 
         if self.get_form_prefix() == '1':
+            validate_repository(self.prev_form_data['repository'])
+            clone_repository(
+                    self.prev_form_data['username'],
+                    self.prev_form_data['repository']
+            )
+            validate_inventory(
+                    self.prev_form_data['repository'],
+                    form.data.dict()['1-inventory']
+            )
             playbook = Playbook()
             playbook.username = self.prev_form_data['username']
             playbook.repository = self.prev_form_data['repository']
             playbook.inventory = form.data.dict()['1-inventory']
             playbook.user = form.data.dict()['1-user']
             playbook.save()
-
-            clone_repository(
-                    self.prev_form_data['username'],
-                    self.prev_form_data['repository']
-            )
         return form.data
 
     def done(self, form_list, form_dict, **kwargs):
