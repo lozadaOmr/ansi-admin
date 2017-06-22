@@ -25,40 +25,12 @@ class Playbook(models.Model):
     def __str__(self):
         return self.repository
 
-    def get_remote_url(self):
-        return "https://github.com/{0}/{1}.git".format(
-                self.username, self.repository
-        )
-
     def get_dir_name(self):
         return os.path.join(settings.PLAYBOOK_DIR, self.repository)
 
-    def clone_repository(self):
-        DIR_NAME = self.get_dir_name()
-        REMOTE_URL = self.get_remote_url()
-
-        os.mkdir(os.path.join(DIR_NAME))
-        repo = git.Repo.init(DIR_NAME)
-        origin = repo.create_remote('origin', REMOTE_URL)
-        origin.fetch()
-        origin.pull(origin.refs[0].remote_head)
-
-    def check_repository_exists(self):
-        return os.path.exists(self.get_dir_name())
-
-    def check_inventory_exists(self):
-        inventory = self.inventory
-        repo_name = self.format_directory()
-
-        os.chdir(settings.PLAYBOOK_DIR + repo_name)
-        current_dir = os.getcwd()
-
-        if not os.path.exists(os.path.join(current_dir, inventory)):
-            raise ValidationError('Inventory file does not exist')
-
     def format_directory(self):
         directory = self.repository.lower()
-        directory = directory.replace(" ", "-")
+        directory = directory.replace(" ","-")
         return directory
 
     def rm_repository(self):
