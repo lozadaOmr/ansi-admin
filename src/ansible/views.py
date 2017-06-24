@@ -1,54 +1,13 @@
-from django.conf import settings
 from django.core.urlresolvers import reverse
-from django.core.validators import ValidationError
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
 from formtools.wizard.views import SessionWizardView
 from ansible.models import Playbook
-import git
-import os
+import utils.repository as utils
+
 
 def index(request):
     return HttpResponse("200")
-
-
-def check_path_exists(repository, host_inventory=None):
-    if host_inventory:
-        os.chdir(settings.PLAYBOOK_DIR + repository)
-        current_dir = os.getcwd()
-        return os.path.exists(os.path.join(current_dir, host_inventory))
-    return os.path.exists(os.path.join(settings.PLAYBOOK_DIR, repository))
-
-
-def clone_repository(username, repository):
-    dir_name = get_dir_name(repository)
-    remote_url = get_remote_repo_url(username, repository)
-
-    os.mkdir(os.path.join(dir_name))
-    repo = git.Repo.init(dir_name)
-    origin = repo.create_remote('origin', remote_url)
-    origin.fetch()
-    origin.pull(origin.refs[0].remote_head)
-
-
-def get_dir_name(repository):
-    return os.path.join(settings.PLAYBOOK_DIR, repository)
-
-
-def get_remote_repo_url(username, repository):
-    return "https://github.com/{0}/{1}.git".format(
-            username, repository
-    )
-
-
-def validate_repository(repository):
-    if check_path_exists(repository):
-        raise ValidationError("Repository already exists")
-
-
-def validate_inventory(repository, inventory):
-    if not check_path_exists(repository, inventory):
-        raise ValidationError("Inventory not found")
 
 
 class PlaybookWizard(SessionWizardView):
@@ -71,12 +30,12 @@ class PlaybookWizard(SessionWizardView):
             self.prev_form_data['username'] = form.data.dict()['0-username']
 
         if self.get_form_prefix() == '1':
-            validate_repository(self.prev_form_data['repository'])
-            clone_repository(
+            utils.validate_repository(self.prev_form_data['repository'])
+            utils.clone_repository(
                     self.prev_form_data['username'],
                     self.prev_form_data['repository']
             )
-            validate_inventory(
+            utils.validate_inventory(
                     self.prev_form_data['repository'],
                     form.data.dict()['1-inventory']
             )
