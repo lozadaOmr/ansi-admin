@@ -1,13 +1,26 @@
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login
+from django.views import View
 from formtools.wizard.views import SessionWizardView
 from ansible.models import Playbook
+from .forms import LoginForm
 import utils.repository as utils
 
 
 def index(request):
     return HttpResponse("200")
+
+
+class Login(View):
+    form_class = LoginForm
+    template_name = 'login_template.html'
+
+    def get(self, request, *args, **kwargs):
+        self.form_class()
+        return render(request, self.template_name, {'form': form})
 
 
 class PlaybookWizard(SessionWizardView):
