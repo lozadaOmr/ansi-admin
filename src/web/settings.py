@@ -149,3 +149,6 @@ FIXTURE_DIRS = ['fixtures']
 
 # PLAYBOOK mounted directory
 PLAYBOOK_DIR = os.path.join(BASE_DIR, 'playbooks/')
+
+
+LOGIN_REDIRECT_URL = 'index'
