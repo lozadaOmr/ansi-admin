@@ -1,0 +1,8 @@
+<h1>Playbooks</h1>
+<ul>
+{% for playbook in object_list %}
+    <li>{{ playbook.pub_date|date }} - {{ playbook.repository }}</li>
+{% empty %}
+    <li>No playbooks yet.</li>
+{% endfor %}
+</ul>
