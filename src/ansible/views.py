@@ -4,6 +4,8 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.views import View
+from django.views.generic.detail import DetailView
+from django.views.generic.list import ListView
 from formtools.wizard.views import SessionWizardView
 from ansible.models import Playbook
 from .forms import LoginForm
@@ -63,3 +65,18 @@ class PlaybookWizard(SessionWizardView):
     def done(self, form_list, form_dict, **kwargs):
         return HttpResponseRedirect('/playbooks')
 
+
+class PlaybookListView(ListView):
+    model = Playbook
+
+    def get_context_data(self, **kwargs):
+        context = super(PlaybookListView, self).get_context_data(**kwargs)
+        return context
+
+
+class PlaybookDetailView(DetailView):
+    model = Playbook
+
+    def get_context_data(self, **kwargs):
+        context = super(PlaybookDetailView, self).get_context_data(**kwargs)
+        return context
