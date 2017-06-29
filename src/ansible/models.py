@@ -43,7 +43,7 @@ class Playbook(models.Model):
         super(Playbook, self).clean(*args, **kwargs)
 
     def save(self, *args, **kwargs):
-        self.directory = self.format_directory()
+        self.directory = self.get_dir_name()
         super(Playbook, self).save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
