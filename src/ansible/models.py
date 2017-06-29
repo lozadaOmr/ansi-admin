@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.core.validators import ValidationError
+import glob
 import os
 import shutil
 
@@ -38,6 +39,13 @@ class Playbook(models.Model):
             shutil.rmtree(DIR_NAME)
         except OSError:
             pass
+
+    def list_playbook_files(self):
+        files = []
+        os.chdir(self.directory)
+        for playbook in glob.glob("*.yml"):
+            files.append({playbook: os.path.join(self.directory, playbook)})
+        return files
 
     def clean(self, *args, **kwargs):
         super(Playbook, self).clean(*args, **kwargs)
