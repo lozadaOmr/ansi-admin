@@ -2,3 +2,7 @@
 <p>Username: {{ object.username }}</p>
 <p>Repository: {{ object.repository }}</p>
 <p>Inventory: {{ object.inventory }}</p>
+
+{% for files in object.list_playbook_files %}
+    {{ files.keys }}
+{% endfor %}
