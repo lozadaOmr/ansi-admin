@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.core.validators import ValidationError
+import utils.slugify as utils
 import glob
 import os
 import shutil
@@ -43,8 +44,12 @@ class Playbook(models.Model):
     def list_playbook_files(self):
         files = []
         os.chdir(self.directory)
+
         for playbook in glob.glob("*.yml"):
-            files.append({playbook: os.path.join(self.directory, playbook)})
+            path = os.path.join(self.directory, playbook)
+            base = os.path.splitext(os.path.basename(path))[0]
+            slug = utils.to_slug(base)
+            files.append({slug: path})
         return files
 
     def clean(self, *args, **kwargs):
