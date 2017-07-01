@@ -3,6 +3,12 @@
 <p>Repository: {{ object.repository }}</p>
 <p>Inventory: {{ object.inventory }}</p>
 
-{% for files in object.list_playbook_files %}
-    {{ files.keys }}
+
+<p>Playbook Files: </p>
+<ul>
+{% for file in object.list_playbook_files %}
+    {% for key,value in file.items %}
+        <li><a href="files/{{ key }}">{{ key }}</a></li>
+    {% endfor %}
 {% endfor %}
+</ul>
