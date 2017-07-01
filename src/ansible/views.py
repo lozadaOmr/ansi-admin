@@ -10,6 +10,7 @@ from formtools.wizard.views import SessionWizardView
 from ansible.models import Playbook
 from .forms import LoginForm
 import utils.repository as utils
+import os
 
 
 def index(request):
@@ -80,3 +81,17 @@ class PlaybookDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(PlaybookDetailView, self).get_context_data(**kwargs)
         return context
+
+
+class PlaybookFileView(View):
+    #TODO: This just to test if it works
+    def get(self, request, *args, **kwargs):
+        playbook = Playbook.query_set.get(pk=self.kwargs['pk'])
+        playbook_dir = playbook.directory
+        # for now assume without validation
+        playbook_file = os.path.join(playbook_dir, self.kwargs['slug'] + '.yml')
+
+        with open(playbook_file, 'r') as f:
+            print f.read()
+
+        return HttpResponse("200")
