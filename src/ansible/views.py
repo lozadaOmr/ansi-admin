@@ -84,14 +84,15 @@ class PlaybookDetailView(DetailView):
 
 
 class PlaybookFileView(View):
-    #TODO: This just to test if it works
+    template_name = "ansible/playbookfile_detail.html"
+
     def get(self, request, *args, **kwargs):
         playbook = Playbook.query_set.get(pk=self.kwargs['pk'])
         playbook_dir = playbook.directory
-        # for now assume without validation
+        # TODO: for now assume without validation
         playbook_file = os.path.join(playbook_dir, self.kwargs['slug'] + '.yml')
 
         with open(playbook_file, 'r') as f:
-            print f.read()
+            content = f.read()
 
-        return HttpResponse("200")
+        return HttpResponse(content)
