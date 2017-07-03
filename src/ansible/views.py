@@ -95,4 +95,4 @@ class PlaybookFileView(View):
         with open(playbook_file, 'r') as f:
             content = f.read()
 
-        return HttpResponse(content)
+        return HttpResponse(content, content_type='text/plain')
