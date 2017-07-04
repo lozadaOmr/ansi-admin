@@ -8,7 +8,10 @@
 <ul>
 {% for file in object.list_playbook_files %}
     {% for key,value in file.items %}
-        <li><a href="files/{{ key }}">{{ key }}</a></li>
+        <li>
+            <a href="files/{{ key }}">{{ key }}</a>
+            <a href="">RUN</a>
+        </li>
     {% endfor %}
 {% endfor %}
 </ul>
