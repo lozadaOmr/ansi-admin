@@ -9,8 +9,13 @@
 {% for file in object.list_playbook_files %}
     {% for key,value in file.items %}
         <li>
+        <form action="{% url 'ansible:playbook-detail' object.id %}" method="post">
+            {% csrf_token %}
+            {{ form }}
             <a href="files/{{ key }}">{{ key }}</a>
-            <a href="">RUN</a>
+            <input type="hidden" name="play_name" value="{{ key }}">
+            <input type="submit" value="Run" />
+        </form>
         </li>
     {% endfor %}
 {% endfor %}
