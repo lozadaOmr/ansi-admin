@@ -82,6 +82,12 @@ class PlaybookDetailView(DetailView):
         context = super(PlaybookDetailView, self).get_context_data(**kwargs)
         return context
 
+    def post(self, request, *args, **kwargs):
+        # TODO:
+        # Run Playbook File
+        # request.POST.get("play_name")
+        return HttpResponse('hey')
+
 
 class PlaybookFileView(View):
     template_name = "ansible/playbookfile_detail.html"
