@@ -9,6 +9,7 @@ from django.views.generic.list import ListView
 from formtools.wizard.views import SessionWizardView
 from ansible.models import Playbook
 from .forms import LoginForm
+from subprocess import Popen
 import utils.repository as utils
 import os
 
@@ -83,9 +84,11 @@ class PlaybookDetailView(DetailView):
         return context
 
     def post(self, request, *args, **kwargs):
-        # TODO:
-        # Run Playbook File
-        # request.POST.get("play_name")
+        data = request.POST.get("playbook_file")
+        current_dir = os.path.dirname(data)
+        cmd = utils.generate_command(data)
+        proc = Popen(cmd, shell=True, cwd=current_dir)
+        proc.wait()
         return HttpResponse('hey')
 
 
