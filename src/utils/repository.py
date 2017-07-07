@@ -23,6 +23,16 @@ def clone_repository(username, repository):
     origin.pull(origin.refs[0].remote_head)
 
 
+def generate_command(data):
+    playbook_file = os.path.basename(data)
+
+    # TODO: check if using default host inventory
+    cmd = []
+    cmd.append('ansible-playbook')
+    cmd.append(playbook_file)
+    return ' '.join(cmd)
+
+
 def get_dir_name(repository):
     return os.path.join(settings.PLAYBOOK_DIR, repository)
 
