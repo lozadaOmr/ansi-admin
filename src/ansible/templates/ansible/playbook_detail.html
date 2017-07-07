@@ -13,7 +13,7 @@
             {% csrf_token %}
             {{ form }}
             <a href="files/{{ key }}">{{ key }}</a>
-            <input type="hidden" name="play_name" value="{{ key }}">
+            <input type="hidden" name="playbook_file" value="{{ value }}">
             <input type="submit" value="Run" />
         </form>
         </li>
