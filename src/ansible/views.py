@@ -9,9 +9,10 @@ from django.views.generic.list import ListView
 from formtools.wizard.views import SessionWizardView
 from ansible.models import Playbook
 from .forms import LoginForm
-from subprocess import Popen
 import utils.repository as utils
 import os
+import subprocess
+import sys
 
 
 def index(request):
@@ -87,9 +88,12 @@ class PlaybookDetailView(DetailView):
         data = request.POST.get("playbook_file")
         current_dir = os.path.dirname(data)
         cmd = utils.generate_command(data)
-        proc = Popen(cmd, shell=True, cwd=current_dir)
+        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True,
+                cwd=current_dir)
         proc.wait()
-        return HttpResponse('hey')
+        result = proc.stdout.read()
+
+        return HttpResponse(result)
 
 
 class PlaybookFileView(View):
