@@ -90,9 +90,15 @@ class PlaybookDetailView(DetailView):
         cmd = utils.generate_command(data)
         proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True,
                 cwd=current_dir)
+        while True:
+            line = proc.stdout.readline()
+            if line != '':
+                print line
+            else:
+                break
         proc.wait()
-        result = proc.stdout.read()
 
+        result = proc.stdout.read()
         return HttpResponse(result)
 
 
