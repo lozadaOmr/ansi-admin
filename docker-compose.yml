@@ -24,10 +24,11 @@ services:
     links:
       - mysql:mysql
     environment:
-      DB_USER: admin
+      DB_USER: root
       PYTHONUNBUFFERED: 1
       DB_PASSWORD: password
       DB_NAME: ansible_dev
+      DB_TEST_NAME: test_ansible_dev
       DB_HOST: mysql
     volumes:
       - "./src:/opt/app"
