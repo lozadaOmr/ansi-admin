@@ -79,6 +79,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': os.environ.get('DB_NAME', 'ansible_dev'),
+        'TEST_NAME': os.environ.get('DB_TEST_NAME', 'test_ansible_dev'),
         'USER': os.environ.get('DB_USER','admin'),
         'PASSWORD': os.environ.get('DB_PASSWORD','password'),
         'HOST': os.environ.get('DB_HOST'),
