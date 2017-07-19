@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.core.urlresolvers import reverse
+from django.core.validators import ValidationError
 from ansible.models import Playbook
 import utils.repository as utils
 import utils.slugify as slugify
@@ -30,6 +31,17 @@ class UtilsRepositoryTest(TestCase):
         playbook = Playbook.query_set.get(id=1)
         repo_url = utils.get_remote_repo_url(playbook.username, playbook.repository)
         self.assertEqual(repo_url, 'https://github.com/lozadaomr/ansi-dst.git')
+
+    def test_validate_repository_raise_validation_error(self):
+        playbook = Playbook.query_set.get(id=1)
+        with self.assertRaises(ValidationError):
+            utils.validate_repository(playbook.repository)
+
+    def test_validate_inventory_raise_validation_error(self):
+        playbook = Playbook.query_set.get(id=1)
+        with self.assertRaises(ValidationError):
+            utils.validate_inventory(playbook.repository,
+                    '/opt/app/playbooks/ansi-dst/none.yml')
 
 
 class UtilsSlugifyTest(TestCase):
