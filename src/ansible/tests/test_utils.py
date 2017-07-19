@@ -27,24 +27,21 @@ class UtilsRepositoryTest(TestCase):
         self.assertEqual(cmd, 'ansible-playbook test.yml')
 
     def test_get_dir_name(self):
-        playbook = Playbook.query_set.get(id=1)
-        repository_path = utils.get_dir_name(playbook.repository)
+        repository_path = utils.get_dir_name(self.playbook.repository)
         self.assertEqual(repository_path, '/opt/app/playbooks/ansi-dst')
 
     def test_get_remote_repo_url(self):
-        playbook = Playbook.query_set.get(id=1)
-        repo_url = utils.get_remote_repo_url(playbook.username, playbook.repository)
+        repo_url = utils.get_remote_repo_url(self.playbook.username,
+                self.playbook.repository)
         self.assertEqual(repo_url, 'https://github.com/lozadaomr/ansi-dst.git')
 
     def test_validate_repository_raise_validation_error(self):
-        playbook = Playbook.query_set.get(id=1)
         with self.assertRaises(ValidationError):
-            utils.validate_repository(playbook.repository)
+            utils.validate_repository(self.playbook.repository)
 
     def test_validate_inventory_raise_validation_error(self):
-        playbook = Playbook.query_set.get(id=1)
         with self.assertRaises(ValidationError):
-            utils.validate_inventory(playbook.repository,
+            utils.validate_inventory(self.playbook.repository,
                     '/opt/app/playbooks/ansi-dst/none.yml')
 
 
