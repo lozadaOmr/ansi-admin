@@ -5,7 +5,11 @@ from ansible.models import Playbook
 import utils.repository as utils
 import utils.slugify as slugify
 
+
 class UtilsRepositoryTest(TestCase):
+
+    def setUp(self):
+        self.playbook = Playbook.query_set.get(id=1)
 
     @classmethod
     def setUpTestData(cls):
