@@ -13,11 +13,17 @@ class PlaybookListViewTest(TestCase):
         resp = self.client.get('/playbooks/') 
         self.assertEqual(resp.status_code, 200)  
 
-    def test_view_url_accessible_by_name(self):
+    def test_view_playbook_list_url_accessible_by_name(self):
         resp = self.client.get(reverse('ansible:playbook-list'))
+        self.assertEqual(resp.status_code, 200)
+
+    def test_view_playbook_detail_url_accessible_by_name(self):
+        resp = self.client.get(reverse(
+            'ansible:playbook-detail', kwargs={'pk':1}))
         self.assertEqual(resp.status_code, 200)
 
     def test_view_uses_correct_template(self):
         resp = self.client.get(reverse('ansible:playbook-list'))
         self.assertEqual(resp.status_code, 200)
         self.assertTemplateUsed(resp, 'ansible/playbook_list.html')
+
