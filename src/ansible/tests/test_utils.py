@@ -1,9 +1,11 @@
 from django.test import TestCase
 from django.core.urlresolvers import reverse
 from django.core.validators import ValidationError
+from django.conf import settings
 from ansible.models import Playbook
 import utils.repository as utils
 import utils.slugify as slugify
+import shutil
 
 
 class UtilsRepositoryTest(TestCase):
@@ -15,6 +17,11 @@ class UtilsRepositoryTest(TestCase):
     def setUpTestData(cls):
         Playbook.query_set.create(username='lozadaomr',repository='ansi-dst',
                 inventory='hosts',user='ubuntu')
+
+    def test_clone_repository(self):
+        utils.clone_repository(self.playbook.username, self.playbook.repository)
+        repo_path = os.path.exists(os.path.join(settings.PLAYBOOK_DIR, self.playbook.repository)
+        self.assertTrue(repo_path)
 
     # TODO: Find a way to mock this during test
     def test_generate_command_blank_data(self):
