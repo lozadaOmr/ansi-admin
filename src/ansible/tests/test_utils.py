@@ -5,6 +5,7 @@ from django.conf import settings
 from ansible.models import Playbook
 import utils.repository as utils
 import utils.slugify as slugify
+import os
 import shutil
 
 
@@ -20,7 +21,8 @@ class UtilsRepositoryTest(TestCase):
 
     def test_clone_repository(self):
         utils.clone_repository(self.playbook.username, self.playbook.repository)
-        repo_path = os.path.exists(os.path.join(settings.PLAYBOOK_DIR, self.playbook.repository)
+        repo_path = os.path.exists(
+                os.path.join(settings.PLAYBOOK_DIR, self.playbook.repository))
         self.assertTrue(repo_path)
 
     # TODO: Find a way to mock this during test
