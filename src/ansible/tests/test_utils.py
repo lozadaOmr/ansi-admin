@@ -2,7 +2,6 @@ from django.test import TestCase
 from django.conf import settings
 import utils.repository as utils
 import utils.slugify as slugify
-import mock
 
 
 class UtilsRepositoryTest(TestCase):
