@@ -108,11 +108,9 @@ class PlaybookFileView(View):
     template_name = "ansible/playbookfile_detail.html"
 
     def get(self, request, *args, **kwargs):
-        playbook = Playbook.query_set.get(pk=self.kwargs['pk'])
-        playbook_dir = playbook.directory
-        # TODO: for now assume without validation
-        playbook_file = os.path.join(playbook_dir, self.kwargs['slug'] + '.yml')
-
+        playbook_file = playbook_utils.content_loader(
+                self.kwargs['pk'], self.kwargs['slug']
+        )
         with open(playbook_file, 'r') as f:
             content = f.read()
 
