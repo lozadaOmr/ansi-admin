@@ -10,6 +10,7 @@ from formtools.wizard.views import SessionWizardView
 from ansible.models import Playbook
 from .forms import LoginForm
 import utils.repository as utils
+import utils.playbook as playbook_utils
 import os
 import subprocess
 import sys
