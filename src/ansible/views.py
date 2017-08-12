@@ -20,6 +20,7 @@ def index(request):
 
 
 class Login(View):
+    # TODO: This needs work
     form_class = LoginForm
     template_name = 'login_template.html'
 
