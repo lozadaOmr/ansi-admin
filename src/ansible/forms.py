@@ -18,3 +18,7 @@ class AnsibleForm2(ModelForm):
 class LoginForm(forms.Form):
     username = forms.CharField(label='Username', max_length=100)
     password = forms.CharField(label='Password', max_length=100)
+
+
+class PlaybookEditForm(forms.Form):
+    playbook = forms.CharField(label='Playbook', max_length=100)
