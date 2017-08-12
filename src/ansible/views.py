@@ -8,7 +8,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from formtools.wizard.views import SessionWizardView
 from ansible.models import Playbook
-from .forms import LoginForm
+from .forms import LoginForm, PlaybookEditForm
 import utils.repository as utils
 import utils.playbook as playbook_utils
 import os
@@ -115,3 +115,19 @@ class PlaybookFileView(View):
             content = f.read()
 
         return HttpResponse(content, content_type='text/plain')
+
+
+class PlaybookFileEditView(View):
+    form_class = PlaybookEditForm
+    template_name = "ansible/playbookfile_edit.html"
+    initial = {'key': 'value'}
+
+    def get(self, request, *args, **kwargs):
+        playbook_file = playbook_utils.content_loader(
+                self.kwargs['pk'], self.kwargs['slug']
+        )
+        with open(playbook_file, 'r') as f:
+            content =  f.read()
+        # TODO: Pass content to Form
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form})
