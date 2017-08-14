@@ -108,12 +108,9 @@ class PlaybookFileView(View):
     template_name = "ansible/playbookfile_detail.html"
 
     def get(self, request, *args, **kwargs):
-        playbook_file = playbook_utils.content_loader(
+        content = playbook_utils.content_loader(
                 self.kwargs['pk'], self.kwargs['slug']
         )
-        with open(playbook_file, 'r') as f:
-            content = f.read()
-
         return HttpResponse(content, content_type='text/plain')
 
 
@@ -123,11 +120,9 @@ class PlaybookFileEditView(View):
     initial = {'key': 'value'}
 
     def get(self, request, *args, **kwargs):
-        playbook_file = playbook_utils.content_loader(
+        content = playbook_utils.content_loader(
                 self.kwargs['pk'], self.kwargs['slug']
         )
-        with open(playbook_file, 'r') as f:
-            content =  f.read()
         # TODO: Pass content to Form
         form = self.form_class()
         return render(request, self.template_name, {'form': form})
