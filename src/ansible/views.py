@@ -117,12 +117,11 @@ class PlaybookFileView(View):
 class PlaybookFileEditView(View):
     form_class = PlaybookEditForm
     template_name = "ansible/playbookfile_edit.html"
-    initial = {'key': 'value'}
 
     def get(self, request, *args, **kwargs):
         content = playbook_utils.content_loader(
                 self.kwargs['pk'], self.kwargs['slug']
         )
-        # TODO: Pass content to Form
-        form = self.form_class()
+        # TODO: Display field as proper Textarea
+        form = self.form_class(initial={'playbook': content})
         return render(request, self.template_name, {'form': form})
