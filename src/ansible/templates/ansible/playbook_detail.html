@@ -15,6 +15,7 @@
             <a href="files/{{ key }}">{{ key }}</a>
             <input type="hidden" name="playbook_file" value="{{ value }}">
             <input type="submit" value="Run" />
+            <a href="files/{{ key }}/edit">Edit</a>
         </form>
         </li>
     {% endfor %}
