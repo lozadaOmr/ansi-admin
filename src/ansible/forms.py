@@ -21,4 +21,4 @@ class LoginForm(forms.Form):
 
 
 class PlaybookEditForm(forms.Form):
-    playbook = forms.CharField(label='Playbook', max_length=100)
+    playbook = forms.CharField(widget=forms.Textarea)
