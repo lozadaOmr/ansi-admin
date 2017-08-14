@@ -8,4 +8,8 @@ def content_loader(pk, slug):
     playbook_dir = playbook.directory
     # TODO: for now assume without validation
     playbook_file = os.path.join(playbook_dir, slug + '.yml')
-    return playbook_file
+
+    with open(playbook_file, 'r') as f:
+        content = f.read()
+
+    return content
