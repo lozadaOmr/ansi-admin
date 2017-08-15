@@ -21,4 +21,4 @@ class LoginForm(forms.Form):
 
 
 class PlaybookEditForm(forms.Form):
-    playbook = forms.CharField(widget=forms.Textarea)
+    playbook = forms.CharField(widget=forms.Textarea(attrs={'rows':30,'cols':80}))
