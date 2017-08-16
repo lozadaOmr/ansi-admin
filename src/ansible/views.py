@@ -122,6 +122,6 @@ class PlaybookFileEditView(View):
         content = playbook_utils.content_loader(
                 self.kwargs['pk'], self.kwargs['slug']
         )
-        # TODO: Display field as proper Textarea
         form = self.form_class(initial={'playbook': content})
-        return render(request, self.template_name, {'form': form})
+        return render(request, self.template_name, {
+            'form': form, 'pk': kwargs['pk'], 'slug': kwargs['slug']})
