@@ -125,3 +125,7 @@ class PlaybookFileEditView(View):
         form = self.form_class(initial={'playbook': content})
         return render(request, self.template_name, {
             'form': form, 'pk': kwargs['pk'], 'slug': kwargs['slug']})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        return HttpResponse("200")
