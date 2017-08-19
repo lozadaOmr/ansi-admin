@@ -128,13 +128,9 @@ class PlaybookFileEditView(View):
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
-        # TODO: Move to utils
         if form.is_valid():
-            playbook = Playbook.query_set.get(pk=self.kwargs['pk'])
-            # TODO: assume for now file ends with '.yml'
-            playbook_file = self.kwargs['slug'] + '.yml'
-            playbook_file = os.path.join(playbook.get_dir_name(), playbook_file)
-            f = open(playbook_file, "w")
-            f.write(form.cleaned_data['playbook'])
-            f.close
+            data = form.cleaned_data['playbook']
+            playbook_utils.write_content(
+                    self.kwargs['pk'], self.kwargs['slug'], data
+            )
         return HttpResponse("200")
