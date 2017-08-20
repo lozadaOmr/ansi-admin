@@ -134,3 +134,20 @@ class PlaybookFileEditView(View):
                     self.kwargs['pk'], self.kwargs['slug'], data
             )
         return HttpResponse("200")
+
+
+class PlaybookFileCreateView(View):
+    form_class = PlaybookFileForm
+    template_name = "ansible/playbookfile_create.html"
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data['playbook']
+            # TODO: Write file to directory
+            return HttpResponse("200")
+ 
