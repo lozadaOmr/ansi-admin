@@ -2,7 +2,7 @@ from django.conf.urls import url
 from ansible.forms import AnsibleForm1, AnsibleForm2
 from ansible.views import (
     PlaybookWizard, PlaybookListView, PlaybookDetailView,
-    PlaybookFileEditView, PlaybookFileView
+    PlaybookFileCreateView, PlaybookFileEditView, PlaybookFileView
 )
 from . import views
 
