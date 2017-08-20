@@ -8,7 +8,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from formtools.wizard.views import SessionWizardView
 from ansible.models import Playbook
-from .forms import LoginForm, PlaybookEditForm
+from .forms import LoginForm, PlaybookFileForm
 import utils.repository as utils
 import utils.playbook as playbook_utils
 import os
@@ -115,7 +115,7 @@ class PlaybookFileView(View):
 
 
 class PlaybookFileEditView(View):
-    form_class = PlaybookEditForm
+    form_class = PlaybookFileForm
     template_name = "ansible/playbookfile_edit.html"
 
     def get(self, request, *args, **kwargs):
