@@ -20,5 +20,5 @@ class LoginForm(forms.Form):
     password = forms.CharField(label='Password', max_length=100)
 
 
-class PlaybookEditForm(forms.Form):
+class PlaybookFileForm(forms.Form):
     playbook = forms.CharField(widget=forms.Textarea(attrs={'rows':30,'cols':80}))
