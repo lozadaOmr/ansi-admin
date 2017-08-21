@@ -3,7 +3,7 @@
 <p>Repository: {{ object.repository }}</p>
 <p>Inventory: {{ object.inventory }}</p>
 
-<a href="files/new">Create</a>
+<a href="{% url 'ansible:playbook-file-create' object.id %}">Create</a>
 
 <p>Playbook Files: </p>
 <ul>
