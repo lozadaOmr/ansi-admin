@@ -143,12 +143,13 @@ class PlaybookFileCreateView(View):
 
     def get(self, request, *args, **kwargs):
         form = self.form_class()
-        return render(request, self.template_name, {'form': form})
+        return render(request, self.template_name, {
+            'form': form, 'pk': self.kwargs['pk']})
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
             data = form.cleaned_data['playbook']
-            # TODO: Write file to directory
+            filename = form.cleaned_data['filename']
             return HttpResponse("200")
  
