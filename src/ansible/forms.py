@@ -21,4 +21,5 @@ class LoginForm(forms.Form):
 
 
 class PlaybookFileForm(forms.Form):
+    filename = forms.CharField(label='Filename', max_length=100)
     playbook = forms.CharField(widget=forms.Textarea(attrs={'rows':30,'cols':80}))
