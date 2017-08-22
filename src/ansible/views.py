@@ -151,5 +151,16 @@ class PlaybookFileCreateView(View):
         if form.is_valid():
             data = form.cleaned_data['playbook']
             filename = form.cleaned_data['filename']
+            playbook = Playbook.query_set.get(pk=self.kwargs['pk'])
+            playbook_dir = playbook.directory
+            playbook_file_path = os.path.join(playbook_dir, filename)
+            # TODO: Check if file exists
+            # TODO: Add proper validation
+            if not os.path.exists(playbook_file_path):
+                # TODO: There could be better ways to handle this block
+                os.mknod(playbook_file_path)
+                file = open(playbook_file_path, 'w')
+                file.write(data)
+                file.close
             return HttpResponse("200")
  
