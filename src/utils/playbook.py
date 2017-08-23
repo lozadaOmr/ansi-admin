@@ -3,6 +3,17 @@ from ansible.models import Playbook
 import os
 
 
+def append_extension(filename, extension='yml'):
+    filename = ".".join((filename, extension))
+    return filename
+
+
+def create_playbook(playbook_file_path, data):
+    os.mknod(playbook_file_path)
+    file = open(playbook_file_path, 'w')
+    file.write(data)
+    file.close()
+
 def content_loader(pk, slug):
     playbook = Playbook.query_set.get(pk=pk)
     playbook_dir = playbook.directory
