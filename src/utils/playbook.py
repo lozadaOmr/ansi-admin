@@ -26,8 +26,6 @@ def content_loader(pk, slug):
 
 def write_content(pk, slug, data):
    playbook = Playbook.query_set.get(pk=pk)
-
-   #TODO: assume for now file ends with '.yml'
    playbook_file = append_extension(slug,'yml')
    playbook_file = os.path.join(playbook.get_dir_name(), playbook_file)
    f = open(playbook_file, "w")
