@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.conf import settings
 import utils.repository as utils
 import utils.slugify as slugify
+import utils.playbook as playbook_utils
 
 
 class UtilsRepositoryTest(TestCase):
@@ -43,3 +44,18 @@ class UtilsSlugifyTest(TestCase):
     def test_slugify_string_equal(self):
        slug = slugify.to_slug(self.data)
        self.assertEqual(slug, self.expected)
+
+
+class UtilsPlaybookTest(TestCase):
+
+    def setUp(self):
+        self.filename = "PlaybookTest"
+        self.extension = "yml"
+
+    def test_append_extension_filename(self):
+        result = playbook_utils.append_extension(self.filename, self.extension)
+        self.assertEqual(result, 'PlaybookTest.yml')
+
+    def test_append_extension_filename_default_extension(self):
+        result = playbook_utils.append_extension(self.filename)
+        self.assertEqual(result, 'PlaybookTest.yml')
