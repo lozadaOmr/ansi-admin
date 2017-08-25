@@ -147,7 +147,7 @@ class PlaybookFileCreateView(View):
             'form': form, 'pk': self.kwargs['pk']})
 
     def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
+        form = self.form_class(request.POST, pk=self.kwargs['pk'])
         if form.is_valid():
             data = form.cleaned_data['playbook']
             filename = playbook_utils.append_extension(
