@@ -14,6 +14,7 @@ def create_playbook(playbook_file_path, data):
     file.write(data)
     file.close()
 
+
 def content_loader(pk, slug):
     playbook = Playbook.query_set.get(pk=pk)
     playbook_dir = playbook.directory
