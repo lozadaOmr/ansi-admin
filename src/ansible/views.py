@@ -150,8 +150,7 @@ class PlaybookFileCreateView(View):
         form = self.form_class(request.POST, pk=self.kwargs['pk'])
         if form.is_valid():
             data = form.cleaned_data['playbook']
-            filename = playbook_utils.append_extension(
-                    form.cleaned_data['filename'])
+            filename = form.cleaned_data['filename']
             playbook = Playbook.query_set.get(pk=self.kwargs['pk'])
             playbook_dir = playbook.directory
             playbook_file_path = os.path.join(playbook_dir, filename)
@@ -159,3 +158,5 @@ class PlaybookFileCreateView(View):
             if not os.path.exists(playbook_file_path):
                 playbook_utils.create_playbook(playbook_file_path, data)
             return HttpResponse("200")
+        return render(request, self.template_name, {
+            'form':form, 'pk': self.kwargs['pk']})
