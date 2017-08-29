@@ -1,6 +1,5 @@
 <form action="/playbooks/{{ pk }}/new/" method="POST">
     {% csrf_token %}
-    {{ form.filename.errors }}
-    {{ form }}
+    {{ form.as_p }}
     <input type="submit" value="Save">
 </form>
