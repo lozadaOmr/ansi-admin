@@ -1,13 +1,16 @@
-from django.db import models
-from django.conf import settings
-from django.core.validators import ValidationError
-import utils.slugify as utils
 import glob
 import os
 import shutil
 
+from django.core.validators import ValidationError
+from django.conf import settings
+from django.db import models
+
+import utils.slugify as utils
+
 
 class QuerySet(models.QuerySet):
+
     def delete(self, *args, **kwargs):
         for obj in self:
             obj.delete()
@@ -15,11 +18,11 @@ class QuerySet(models.QuerySet):
 
 
 class Playbook(models.Model):
-    username = models.CharField(max_length=39, default="")
-    repository = models.CharField(max_length=100, default="")
-    inventory = models.CharField(max_length=200, default="hosts")
-    user = models.CharField(max_length=200, default="ubuntu")
-    directory = models.CharField(max_length=200, editable=False, default="dir")
+    username = models.CharField(max_length=39, default='')
+    repository = models.CharField(max_length=100, default='')
+    inventory = models.CharField(max_length=200, default='hosts')
+    user = models.CharField(max_length=200, default='ubuntu')
+    directory = models.CharField(max_length=200, editable=False, default='dir')
 
     query_set = QuerySet.as_manager()
 
@@ -31,7 +34,7 @@ class Playbook(models.Model):
 
     def format_directory(self):
         directory = self.repository.lower()
-        directory = directory.replace(" ","-")
+        directory = directory.replace(' ','-')
         return directory
 
     def rm_repository(self):
@@ -45,7 +48,7 @@ class Playbook(models.Model):
         files = []
         os.chdir(self.directory)
 
-        for playbook in glob.glob("*.yml"):
+        for playbook in glob.glob('*.yml'):
             path = os.path.join(self.directory, playbook)
             base = os.path.splitext(os.path.basename(path))[0]
             slug = utils.to_slug(base)
@@ -64,5 +67,5 @@ class Playbook(models.Model):
         super(Playbook, self).delete(*args, **kwargs)
 
     class Meta:
-        verbose_name = "playbook"
-        verbose_name_plural = "playbooks"
+        verbose_name = 'playbook'
+        verbose_name_plural = 'playbooks'
