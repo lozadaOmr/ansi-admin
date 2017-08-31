@@ -1,7 +1,8 @@
-from django.conf import settings
-from django.core.validators import ValidationError
 import git
 import os
+
+from django.core.validators import ValidationError
+from django.conf import settings
 
 
 def check_path_exists(repository, host_inventory=None):
@@ -9,6 +10,7 @@ def check_path_exists(repository, host_inventory=None):
         os.chdir(settings.PLAYBOOK_DIR + repository)
         current_dir = os.getcwd()
         return os.path.exists(os.path.join(current_dir, host_inventory))
+
     return os.path.exists(os.path.join(settings.PLAYBOOK_DIR, repository))
 
 
@@ -38,17 +40,16 @@ def get_dir_name(repository):
 
 
 def get_remote_repo_url(username, repository):
-    return "https://github.com/{0}/{1}.git".format(
-            username, repository
+    return 'https://github.com/{0}/{1}.git'.format(
+        username, repository
     )
 
 
 def validate_repository(repository):
     if check_path_exists(repository):
-        raise ValidationError("Repository already exists")
+        raise ValidationError('Repository already exists')
 
 
 def validate_inventory(repository, inventory):
     if not check_path_exists(repository, inventory):
-        raise ValidationError("Inventory not found")
-
+        raise ValidationError('Inventory not found')
