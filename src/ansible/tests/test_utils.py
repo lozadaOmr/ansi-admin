@@ -1,8 +1,9 @@
-from django.test import TestCase
 from django.conf import settings
+from django.test import TestCase
+
+import utils.playbook as playbook_utils
 import utils.repository as utils
 import utils.slugify as slugify
-import utils.playbook as playbook_utils
 
 
 class UtilsRepositoryTest(TestCase):
@@ -30,15 +31,16 @@ class UtilsRepositoryTest(TestCase):
         self.assertEqual(repository_path, '/opt/app/playbooks/ansi-dst')
 
     def test_get_remote_repo_url(self):
-        repo_url = utils.get_remote_repo_url(self.playbook['username'],
-                self.playbook['repository'])
+        repo_url = utils.get_remote_repo_url(
+            self.playbook['username'], self.playbook['repository']
+        )
         self.assertEqual(repo_url, 'https://github.com/lozadaomr/ansi-dst.git')
 
 
 class UtilsSlugifyTest(TestCase):
 
     def setUp(self):
-        self.data = "Lorem ipsum dolor sit amet"
+        self.data = 'Lorem ipsum dolor sit amet'
         self.expected = u'lorem-ipsum-dolor-sit-amet'
 
     def test_slugify_string_equal(self):
@@ -49,8 +51,8 @@ class UtilsSlugifyTest(TestCase):
 class UtilsPlaybookTest(TestCase):
 
     def setUp(self):
-        self.filename = "PlaybookTest"
-        self.extension = "yml"
+        self.filename = 'PlaybookTest'
+        self.extension = 'yml'
 
     def test_append_extension_filename(self):
         result = playbook_utils.append_extension(self.filename, self.extension)
