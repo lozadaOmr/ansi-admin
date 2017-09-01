@@ -1,13 +1,19 @@
 from django.test import TestCase
+
 from ansible.models import Playbook
+
 
 class PlaybookModelTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
         #Set up non-modified objects used by all test methods
-        Playbook.query_set.create(username='lozadaomr',repository='ansi-dst',
-                inventory='hosts',user='ubuntu')
+        Playbook.query_set.create(
+            username='lozadaomr',
+            repository='ansi-dst',
+            inventory='hosts',
+            user='ubuntu'
+        )
 
     def test_username_label(self):
         playbook=Playbook.query_set.get(id=1)
