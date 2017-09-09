@@ -15,6 +15,10 @@ class PlaybookListViewTest(TestCase):
         resp = self.client.get(reverse('ansible:playbook-list'))
         self.assertEqual(resp.status_code, 200)
 
+    def test_view_playbook_list_has_create_playbook_link(self):
+        resp = self.client.get(reverse('ansible:playbook-create'))
+        self.assertEqual(resp.status_code, 200)
+
     def test_view_playbook_detail_url_accessible_by_name(self):
         resp = self.client.get(
             reverse('ansible:playbook-detail', kwargs={'pk':1})
