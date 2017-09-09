@@ -8,7 +8,8 @@ from ansible.views import (
 
 
 urlpatterns = [
-    url(r'^create/$', PlaybookWizard.as_view([AnsibleForm1, AnsibleForm2])),
+    url(r'^create/$', PlaybookWizard.as_view([AnsibleForm1, AnsibleForm2]),
+                                             name='playbook-create'),
     url(r'^$', PlaybookListView.as_view(), name='playbook-list'),
     url(r'^(?P<pk>[-\w]+)/$',
         PlaybookDetailView.as_view(), name='playbook-detail'),
