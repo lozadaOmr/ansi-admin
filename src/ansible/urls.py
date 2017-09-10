@@ -2,8 +2,8 @@ from django.conf.urls import url
 
 from ansible.forms import AnsibleForm1, AnsibleForm2
 from ansible.views import (
-    PlaybookWizard, PlaybookListView, PlaybookDetailView,
-    PlaybookFileCreateView, PlaybookFileEditView, PlaybookFileView
+    PlaybookDetailView, PlaybookListView, PlaybookDeleteView, PlaybookFileView,
+    PlaybookFileCreateView, PlaybookFileEditView, PlaybookWizard
 )
 
 
@@ -20,6 +20,11 @@ urlpatterns = [
         r'^$',
         PlaybookListView.as_view(),
         name='playbook-list'
+    ),
+	url(
+        r'^(?P<pk>[-\w]+)/delete$',
+        PlaybookDeleteView.as_view(),
+        name='playbook-delete'
     ),
     url(
         r'^(?P<pk>[-\w]+)/$',
