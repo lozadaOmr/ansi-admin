@@ -4,6 +4,7 @@
 {% for playbook in object_list %}
     <li>
         <a href={{ playbook.id }}>{{ playbook.repository }}</a>
+        <a href={% url 'ansible:playbook-delete' playbook.id %}>Delete</a>
     </li>
 {% empty %}
     <li>No playbooks yet.</li>
