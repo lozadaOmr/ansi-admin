@@ -4,8 +4,9 @@ import sys
 
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse_lazy
 from django.views import View
+from django.views.generic import DeleteView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.http import HttpResponse, HttpResponseRedirect
@@ -82,6 +83,11 @@ class PlaybookListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(PlaybookListView, self).get_context_data(**kwargs)
         return context
+
+
+class PlaybookDeleteView(DeleteView):
+    model = Playbook
+    success_url = reverse_lazy('playbook-list')
 
 
 class PlaybookDetailView(DetailView):
