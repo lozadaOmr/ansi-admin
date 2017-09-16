@@ -89,6 +89,11 @@ class PlaybookDeleteView(DeleteView):
     model = Playbook
     success_url = reverse_lazy('playbook-list')
 
+    def post(self, request, *args, **kwargs):
+        playbook = Playbook.query_set.get(pk=self.kwargs['pk'])
+        playbook.delete()
+        return HttpResponseRedirect('/playbooks')
+
 
 class PlaybookDetailView(DetailView):
     model = Playbook
