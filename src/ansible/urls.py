@@ -21,7 +21,7 @@ urlpatterns = [
         PlaybookListView.as_view(),
         name='playbook-list'
     ),
-	url(
+    url(
         r'^(?P<pk>[-\w]+)/delete$',
         PlaybookDeleteView.as_view(),
         name='playbook-delete'
